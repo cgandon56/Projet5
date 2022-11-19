@@ -14,16 +14,12 @@ fetch(`http://localhost:3000/api/products/${idProduct}`)//adresse URL à aller c
     showData(data)
     const button = (document.querySelector("#addToCart"));
 button.addEventListener("click", function() {
-if (document.querySelector("#quantity").reportValidity() &&
-document.querySelector("#colors").reportValidity()) {
-document.querySelector("#quantity").value;
-document.querySelector("#colors").value;
-addSofa(product);
-}
+console.log(addEventListener);
+addSofa(idProduct);
+})
 }) ;
-})  ;
-}
-
+}  ;
+article();
 
 //Déclaration et Affichage des détails avec la fonction showData
 function showData(data){
@@ -43,25 +39,56 @@ const color = (document.querySelector("#colors"));
 for (i = 0; i < data.colors.length; i++) {//Choix de la couleur
   color.innerHTML += `<option value="${data.colors[i]}">${data.colors[i]}</option>`;
 }
+
 }
 
-article();
+//création localstorage
+let cart=localStorage.getItem("cart");
+let objectCart={}
+ 
+
 
 
 //Ajouter des articles dans le panier
 function addSofa(product)  {
+    if (cart == null){
+    let color = document.querySelector("#colors").value; 
+    let quantity = document.querySelector("#quantity").value;
+    console.log(color);
+    console.log(quantity);
+    objectCart={
+        color: color,
+        quantity : quantity,
+        productId : product,
+    }
+    localStorage.setItem("cart", JSON.stringify(objectCart))
+   }
+   else{ console.log(cart);
+        let foundProduct = cart.find(p => p.productId == product  &&  p.color == color);
+    console.log(foundProduct);
+    if(foundProduct){
+
+    }
+   }
+
+}
+
+
+ /*
     let sofa = getSofa();    
-let foundProduct = sofa.find(p => p._id == product._id && p.colors == product.colors); //chercher un élément sur un tableau par rapport à une condition
-if(foundProduct != undefined){
-foundProduct.quantity += product.quantity;
+let foundProduct = sofa.find(p => p._id == product._id &&  p.colors == product.colors && p.quantity == product.quantity); //chercher un élément sur un tableau par rapport à une condition
+console.log(foundProduct);
+if(foundProduct != undefined)
+foundProduct.quantity++;
 if (product.quantity > 100) {
-product.quantity = 100;
+    product.quantity = 100;
 }  else{
 sofa.push(product);
 }   
 saveSofa(sofa);
-}
-}
+}*/
+
+
 
 //Sauver et récupérer le panier
 function saveSofa(sofa){ //sauver le panier 
