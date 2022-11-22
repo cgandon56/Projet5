@@ -15,6 +15,8 @@ fetch(`http://localhost:3000/api/products/${idProduct}`)//adresse URL à aller c
     const button = (document.querySelector("#addToCart"));
 button.addEventListener("click", function() {
 console.log(addEventListener);
+if (document.querySelector("#quantity").reportValidity() && // message doit être supérieur à 1 et inférieur ou égal à 100
+    document.querySelector("#colors").reportValidity())
 addSofa(idProduct);
 })
 }) ;
@@ -43,64 +45,59 @@ for (i = 0; i < data.colors.length; i++) {//Choix de la couleur
 }
 
 //création localstorage
-let cart=localStorage.getItem("cart");
 let objectCart={}
- 
-
 
 
 //Ajouter des articles dans le panier
 function addSofa(product)  {
-    if (cart == null){
     let color = document.querySelector("#colors").value; 
-    let quantity = document.querySelector("#quantity").value;
-    console.log(color);
-    console.log(quantity);
-    objectCart={
-        color: color,
-        quantity : quantity,
-        productId : product,
+    let quantity = document.querySelector("#quantity").value; 
+    let cart = this.getSofa(); 
+     if (color != "") {let foundProduct = cart.find(p => p.idProduct == product  &&  p.color == color);
+        if(foundProduct){
+            for (i = 0; i < cart.length; i++) {
+                if (cart[i].idProduct == product && cart[i].color == color) {
+                    cart[i].quantity = parseInt(cart[i].quantity) + parseInt(quantity);
+                }
+            } 
+        }
+        else{
+            cart.push({color: color, quantity : quantity, idProduct : product});  
+        }
+     }   
+    saveSofa(cart);
     }
-    localStorage.setItem("cart", JSON.stringify(objectCart))
-   }
-   else{ console.log(cart);
-        let foundProduct = cart.find(p => p.productId == product  &&  p.color == color);
-    console.log(foundProduct);
-    if(foundProduct){
-
-    }
-   }
-
-}
 
 
- /*
-    let sofa = getSofa();    
-let foundProduct = sofa.find(p => p._id == product._id &&  p.colors == product.colors && p.quantity == product.quantity); //chercher un élément sur un tableau par rapport à une condition
-console.log(foundProduct);
-if(foundProduct != undefined)
-foundProduct.quantity++;
-if (product.quantity > 100) {
-    product.quantity = 100;
-}  else{
-sofa.push(product);
-}   
-saveSofa(sofa);
-}*/
+   
+
+    
+/*let foundProduct = cart.find(p => p.productId == product  &&  p.color == color);
+if(foundProduct){
+
+    for (i = 0; i < cart.length; i++) {
+        if (cart[i].productId == product && cart[i].color == color) {
+            cart[i].quantity = parseInt(cart[i].quantity) + parseInt(quantity);
+        }
+    } 
+} */
+
+
+
 
 
 
 //Sauver et récupérer le panier
-function saveSofa(sofa){ //sauver le panier 
-    localStorage.setItem("sofa", JSON.stringify(sofa));//stringify=prend en objet et le transforme en chaine de caractères pour l'enregistrer
+function saveSofa(cart){ //sauver le panier 
+    localStorage.setItem("cart", JSON.stringify(cart));//stringify=prend en objet et le transforme en chaine de caractères pour l'enregistrer
 }
 
 function getSofa(){// récupérer
-    let sofa = localStorage.getItem("sofa");
-    if(sofa == null){
+    let cart = localStorage.getItem("cart");
+    if(cart == null){
         return [];
-    }else{
-       return JSON.parse(sofa);
+    }else{ 
+       return JSON.parse(cart) ;
     }
 }
 
