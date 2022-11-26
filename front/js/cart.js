@@ -1,5 +1,3 @@
-
-//Récupération du produit
 let cart = getSofa(); console.log(cart);
 
 
@@ -13,27 +11,41 @@ function getSofa(){// fonction récupérer le panier
     }
 }
 
+function getDetailsSofa(idProduct){
+    return  fetch(`http://localhost:3000/api/products/${idProduct}`)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+                    return data;
+        })
+        .catch(error => console.warn(error));
+
+}
+
+function listCart(){
+    for (i = 0; i <cart.length; i++){
+        let quantity = cart[i].quantity
+        let color = cart[i].color
+        let idProduct = cart[i].idProduct
+
+        getDetailsSofa(cart[i].idProduct).then(response => {
 
 
-fetch(`http://localhost:3000/api/products`)//adresse URL à aller chercher
-.then( data => data.json()
-.then(jsoncart =>{ console.log(cart);
-        for (i = 0; i <cart.length; i++){ 
     document.querySelector("#cart__items").innerHTML +=
-    `<article class="cart__item" data-id= "${cart[i].idProduct}" data-color="${cart[i].colors}">
+    `<article class="cart__item" data-id= "${idProduct}" data-color="${color}">
 <div class="cart__item__img">
-  <img src=${jsoncart[i].imageUrl}  alt= "Photographie d'un canapé">
+  <img src=${response.imageUrl}  alt= "Photographie d'un canapé">
 </div>
 <div class="cart__item__content">
   <div class="cart__item__content__description">
-    <h2>${jsoncart[i].name}</h2>
-    <p>${cart[i].color}</p>
-    <p>${jsoncart[i].price}</p>
+    <h2>${response.name}</h2>
+    <p>${color}</p>
+    <p>${response.price}</p>
   </div>
   <div class="cart__item__content__settings">
     <div class="cart__item__content__settings__quantity">
       <p>Qté : </p>
-      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${cart[i].quantity}">
+      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${quantity}">
     </div>
     <div class="cart__item__content__settings__delete">
       <p class="deleteItem">Supprimer</p>
@@ -42,44 +54,65 @@ fetch(`http://localhost:3000/api/products`)//adresse URL à aller chercher
 </div>
 </article>`
 
+});
+    }
 }
-}));
+
+listCart()
+
+
+//Modifier la quantité
+function changeQuantity(product, quantity){
+    let cart = getSofa();  
+    let foundProduct = cart.find(p=>p.id != product.id)
+    if(foundProduct != undefined){ //gestion de la quantité
+        foundProduct.quantity += quantity;
+        if(foundProduct.quantity <= 0){
+            removeFromSofa(foundProduct);
+        }else{
+            saveSofa(cart);
+        }
+    }
+    }
+
+
+// supprimer un article
+function removeFromSofa (idProduct){ 
+    let cart = getSofa();
+    cart = cart.filter(p => p.id != idProduct)
+      saveSofa(cart);
+}
+
+document.getElementsByClassName("deleteItem").addEventListener("click", function(){;
+        removeFromSofa();}) 
+    
+function saveSofa(cart){ //sauver le panier 
+    localStorage.setItem("cart", JSON.stringify(cart));//stringify=prend en objet et le transforme en chaine de caractères pour l'enregistrer
+}
 
 
 /*
-
-
-
-// Déclaration et affichage du panier 
-/*
-let section = (document.querySelector("#cart__items")); 
-for (i = 0; i <cart.length; i++){
-    const article =
-
-`<article class="cart__item" data-id= "{idProduct}" data-color="{product-color}">
-<div class="cart__item__img">
-  <img src= http://localhost:3000/api/products/${cart[i].imageUrl}  alt= "Photographie d'un canapé">
-</div>
-<div class="cart__item__content">
-  <div class="cart__item__content__description">
-    <h2>${cart[i].name}</h2>
-    <p>${cart[i].colors}</p>
-    <p>${cart[i].price}</p>
-  </div>
-  <div class="cart__item__content__settings">
-    <div class="cart__item__content__settings__quantity">
-      <p>Qté : </p>
-      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${cart[i].quantity}">
-    </div>
-    <div class="cart__item__content__settings__delete">
-      <p class="deleteItem">Supprimer</p>
-    </div>
-  </div>
-</div>
-</article>`
-section.innerHTML += article;
+// Calculer le nombre d'articles dans le panier
+function getNumberProduct(){
+    let cart = getSofa(); 
+    let number = 0;
+    for(let product of cart)
+    number += product.quantity;
+    return number;
 }
 
+
+
+// Calcul du prix
+function getTotalPrice(){
+    let cart = getSofa(); 
+    let total = 0;
+    for(let product of cart)
+    total += product.quantity * product.price;
+    return total;
+}
+
+/*
 
 //fonction modifier la quantité
 function changeQuantity(product, quantity){
@@ -105,7 +138,7 @@ function changeQuantity(product, quantity){
 
 
 
-
+/*
 
 //Gestion du panier
 
@@ -138,6 +171,7 @@ function removeFromSofa (product){
 //Modifier la quantité
 function changeQuantity(product, quantity){
     let sofa = getSofa();  
+    let foundProduct = cart.find(p=>p.id != product.id)
     if(foundProduct != undefined){ //gestion de la quantité
         foundProduct.quantity += quantity;
         if(foundProduct.quantity <= 0){
@@ -150,18 +184,18 @@ function changeQuantity(product, quantity){
 
 // Calculer le nombre d'articles dans le panier
     function getNumberProduct(){
-        let sofa = getSofa(); 
+        let cart = getSofa(); 
         let number = 0;
-        for(let product of sofa)
+        for(let product of cart)
         number += product.quantity;
         return number;
     }
 
     // Calcul du prix
     function getTotalPrice(){
-        let sofa = getSofa(); 
+        let cart = getSofa(); 
         let total = 0;
-        for(let product of sofa)
+        for(let product of cart)
         number += product.quantity * product.price;
         return number;
     }
@@ -193,11 +227,29 @@ addSofa(product){
 }*/
 
 
-/*//Gestion de l'affichage et les interactions de la page contact
+//Gestion de l'affichage et les interactions de la page contact
+document.querySelector("#order").addEventListener("click",function(){
+    var valid = true;
+    for(let input of document.querySelectorAll(".form input,.form textarea")){
+        valid &= input.reportValidity(); // va afficher un message pour dire que le champ n'est pas correct
+        if(!valid){
+            break;
+        }
+    }
+    if(valid){
+        alert("votre commande est confirmée");
+    }
+});
+
+
+
+
+
+/*
 document.querySelector('.form input[type="submit"]').addEventListener("click",function(){
     var valid = true;
     for(let input of document.querySelectorAll(".form input,.form textarea")){
-        valid &= input.reportValidity();
+        valid &= input.reportValidity(); // va afficher un message pour dire que le champ n'est pas correct
         if(!valid){
             break;
         }
@@ -206,6 +258,7 @@ document.querySelector('.form input[type="submit"]').addEventListener("click",fu
         alert("votre commande est confirmée");
     }
 });*/
+
 
 
 
