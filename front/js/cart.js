@@ -53,45 +53,78 @@ function listCart(){
   </div>
 </div>
 </article>`
-
-});
-    }
-}
-
+         // Suppression d'un produit
+         const deleteItemList = document.querySelectorAll(".cart__item__content__settings__delete");
+         for(let j=0;j<deleteItemList.length;j++) {
+             i = j
+             deleteItemList[j].onclick=function() {
+                 removeFromSofa(cart,j)
+                 saveSofa(cart)
+             }
+         }
+         })
+             }
+         }
 listCart()
 
+function removeFromSofa (cart,index){
+    // let cart = getSofa();
+     itemToDelete = document.querySelector(
+         `[data-id="${cart[index].idProduct}"][data-color="${cart[index].color}"]`
+     );
+     cart.splice(index, 1);
+         itemToDelete.remove();
+ }
 
+ function saveSofa(cart){ //sauver le panier 
+    localStorage.setItem("cart", JSON.stringify(cart));//stringify=prend en objet et le transforme en chaine de caractères pour l'enregistrer
+}
+
+/*
 //Modifier la quantité
 function changeQuantity(product, quantity){
-    let cart = getSofa();  
+    let sofa = getSofa();  
     let foundProduct = cart.find(p=>p.id != product.id)
     if(foundProduct != undefined){ //gestion de la quantité
         foundProduct.quantity += quantity;
         if(foundProduct.quantity <= 0){
             removeFromSofa(foundProduct);
         }else{
-            saveSofa(cart);
+            saveSofa(sofa);
         }
     }
     }
 
 
-// supprimer un article
-function removeFromSofa (idProduct){ 
-    let cart = getSofa();
-    cart = cart.filter(p => p.id != idProduct)
-      saveSofa(cart);
-}
 
-document.getElementsByClassName("deleteItem").addEventListener("click", function(){;
-        removeFromSofa();}) 
+
+/*
+let AllQuantity={}
+
+// Calculer le nombre d'articles dans le panier
+function getNumberProduct() {
+    let number = 0;
+    for(i = 0; i <cart.length; i++){
+        let TotalQuantity = cart[i].quantity;
+        console.log(TotalQuantity );
+  const reducer = (accumultor )    
+    
+     }}
+    document.querySelector("#totalQuantity").innerHTML = (getNumberProduct());
+
+
+
+
+/*
+
+
     
 function saveSofa(cart){ //sauver le panier 
     localStorage.setItem("cart", JSON.stringify(cart));//stringify=prend en objet et le transforme en chaine de caractères pour l'enregistrer
 }
 
+t
 
-/*
 // Calculer le nombre d'articles dans le panier
 function getNumberProduct(){
     let cart = getSofa(); 
@@ -101,7 +134,7 @@ function getNumberProduct(){
     return number;
 }
 
-
+document.querySelector("#totalQuantity").innerHTML = (cart.getNumberProduct());
 
 // Calcul du prix
 function getTotalPrice(){
@@ -112,33 +145,13 @@ function getTotalPrice(){
     return total;
 }
 
-/*
-
-//fonction modifier la quantité
-function changeQuantity(product, quantity){
-   
-    if(foundProduct != undefined){ //gestion de la quantité
-        foundProduct.quantity += quantity;
-        if(foundProduct.quantity <= 0){
-            removeFromSofa(foundProduct);
-        }else{
-            saveSofa(cart);
-        }
-    }
-    }
-
-
-  
-
-
- 
 
 
 
 
 
 
-/*
+
 
 //Gestion du panier
 
@@ -159,14 +172,6 @@ function getSofa(){// fonction récupérer le panier
     }
 }
 
-
-
-// supprimer un article
-function removeFromSofa (product){ 
-    let sofa = getSofa();
-    sofa = sofa.filter(p => p.id != product.id)
-    saveSofa(sofa);
-}
 
 //Modifier la quantité
 function changeQuantity(product, quantity){
