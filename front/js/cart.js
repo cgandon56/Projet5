@@ -60,8 +60,12 @@ function listCart(){
              deleteItemList[j].onclick=function() {
                  removeFromSofa(cart,j)
                  saveSofa(cart)
+                 window.location.reload();
              }
          }
+// calcul de la quantité
+document.getElementById("totalQuantity").innerHTML = getNumberProduct();
+
          })
              }
          }
@@ -80,121 +84,162 @@ function removeFromSofa (cart,index){
     localStorage.setItem("cart", JSON.stringify(cart));//stringify=prend en objet et le transforme en chaine de caractères pour l'enregistrer
 }
 
-/*
-//Modifier la quantité
-function changeQuantity(product, quantity){
-    let sofa = getSofa();  
-    let foundProduct = cart.find(p=>p.id != product.id)
-    if(foundProduct != undefined){ //gestion de la quantité
-        foundProduct.quantity += quantity;
-        if(foundProduct.quantity <= 0){
-            removeFromSofa(foundProduct);
-        }else{
-            saveSofa(sofa);
-        }
-    }
-    }
 
 
 
 
-/*
-let AllQuantity={}
-
-// Calculer le nombre d'articles dans le panier
-function getNumberProduct() {
+  // Fonction calcul du nombre d'articles dans le panier 
+  function getNumberProduct() {
+    let cart = this.getSofa(); 
     let number = 0;
-    for(i = 0; i <cart.length; i++){
-        let TotalQuantity = cart[i].quantity;
+          for(i = 0; i <cart.length; i++){
+            let TotalQuantity = cart[i].quantity;
         console.log(TotalQuantity );
-  const reducer = (accumultor )    
+        number += parseInt(cart[i].quantity)  ;
+    }
+    return number;      
+ }
+
+
+
+
+
+
+ 
+//Déclaration des éléments du questionnaire
+const firstName = document.querySelector("#firstName");
+firstName.addEventListener("change", function(){
+validfirstName(this)
+})
+
+const lastName = document.querySelector("#lastName");
+lastName.addEventListener("change", function(){
+validlastName(this)
+})
+
+
+const address = document.querySelector("#address");
+address.addEventListener("change", function(){
+    validaddress(this)
+    })
+
+
+
+const city= document.querySelector("#city");
+city.addEventListener("change", function(){
+validcity(this)
+    })
+
+               
+const email= document.querySelector("#email");
+email.addEventListener("change", function(){
+validEmail(this)})
+        
+  
+//Fonctions RegExp pour la validation   
+
+
+//Prénom
+function validfirstName(inputfirstName){
+    let firstNameRegExp = new RegExp(/^[a-z][a-z '-.,]{1,31}$|^$/i);
+    let testfirstName = firstNameRegExp.test(inputfirstName.value) ;
+    if(testfirstName){
+        firstNameErrorMsg.innerHTML = "Valide";
+        return true
+    }else{
+        firstNameErrorMsg.innerHTML = "Non valide";
+        return false;
+    }
+}
+
+
+//Nom
+function validlastName(inputlastName){
+    let lastNameRegExp = new RegExp(/^[a-z][a-z '-.,]{1,31}$|^$/i);
+    let testlastName = lastNameRegExp.test(inputlastName.value) ;
+    if(testlastName){
+        lastNameErrorMsg.innerHTML = "Valide";
+        return true
+    }else{
+        lastNameErrorMsg.innerHTML = "Non valide";
+        return false;
+    }
+}
+
+
+//Adresse
+function validaddress(inputAddress){
+    let addressRegExp = new RegExp(/^[a-zA-Z0-9\s,.'-]{3,}$/);
+    let testaddress = addressRegExp.test(inputAddress.value) ;
+    if(testaddress){
+        addressErrorMsg.innerHTML = "Valide";
+        return true
+    }else{
+        addressErrorMsg.innerHTML = "Non valide";
+        return false;
+    }
+}
+
+
+
+//Ville
+function validcity(inputcity){
+    let cityRegExp = new RegExp(/^[a-zA-Z0-9\s,.'-]{3,}$/);
+    let testcity = cityRegExp.test(inputcity.value) ;
+    if(testcity){
+        cityErrorMsg.innerHTML = "Valide";
+        return true
+    }else{
+        cityErrorMsg.innerHTML = "Non valide";
+        return false;
+    }
+}
+ 
+
+
+//Email
+function validEmail(inputEmail){
+let emailRegExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);  // le + veut dire peut être écrit une fois ou plusieurs
+let testEmail = emailRegExp.test(inputEmail.value) ;
+if(testEmail){
+    emailErrorMsg.innerHTML = "Adresse valide";
+    return true
+}else{
+    emailErrorMsg.innerHTML = "Message d'erreur";
+    return false;
     
-     }}
-    document.querySelector("#totalQuantity").innerHTML = (getNumberProduct());
+}
+}
+
+
+//------------------------------------------------------------
 
 
 
 
 /*
-
-
-    
-function saveSofa(cart){ //sauver le panier 
-    localStorage.setItem("cart", JSON.stringify(cart));//stringify=prend en objet et le transforme en chaine de caractères pour l'enregistrer
-}
-
-t
-
-// Calculer le nombre d'articles dans le panier
-function getNumberProduct(){
-    let cart = getSofa(); 
-    let number = 0;
-    for(let product of cart)
-    number += product.quantity;
-    return number;
-}
-
-document.querySelector("#totalQuantity").innerHTML = (cart.getNumberProduct());
-
-// Calcul du prix
-function getTotalPrice(){
-    let cart = getSofa(); 
-    let total = 0;
-    for(let product of cart)
-    total += product.quantity * product.price;
-    return total;
-}
-
-
-
-
-
-
 
 
 
 //Gestion du panier
 
-//Ajouter, sauver et récupérer le panier
-function saveSofa(sofa){ //sauver le panier 
-    localStorage.setItem("sofa", JSON.stringify(sofa));//stringify=prend en objet et le transforme en chaine de caractères pour l'enregistrer
-}
-
-
-function getSofa(){// fonction récupérer le panier
-    let cart = localStorage.getItem("cart"); console.log(cart);
-    if(cart == null){
-    let h1 = document.querySelector("h1");
-    h1.innerText = "Votre panier est vide";
-
-    }else{
-       return JSON.parse(cart);
-    }
-}
 
 
 //Modifier la quantité
 function changeQuantity(product, quantity){
-    let sofa = getSofa();  
-    let foundProduct = cart.find(p=>p.id != product.id)
+    let cart = getSofa();  
+    let foundProduct = cart.find(p=>p.idProduct != product)
     if(foundProduct != undefined){ //gestion de la quantité
         foundProduct.quantity += quantity;
         if(foundProduct.quantity <= 0){
             removeFromSofa(foundProduct);
         }else{
-            saveSofa(sofa);
+            saveSofa(cart);
         }
     }
     }
 
-// Calculer le nombre d'articles dans le panier
-    function getNumberProduct(){
-        let cart = getSofa(); 
-        let number = 0;
-        for(let product of cart)
-        number += product.quantity;
-        return number;
-    }
+
 
     // Calcul du prix
     function getTotalPrice(){
@@ -206,30 +251,7 @@ function changeQuantity(product, quantity){
     }
 
 
-// récupération du panier en objet mode orienté object
-class sofa{
-    constructor(){
-        let sofa = localStorage.getItem("sofa");
-        if(sofa==null){
-            this.sofa = [];
-        }else{
-            this.sofa = JSON.parse(sofa);
-        }  
-    }
-    saveSofa(sofa){  
-        localStorage.setItem("sofa", JSON.stringify(this.sofa));
-}
-addSofa(product){
-    let foundProduct = this.sofa.find(p => p.id == product.id);// find=chercher un élement dans un tableau par rapport à une condition
-    if(foundProduct != undefined){ //gestion de la quantité
-        foundProduct.quantity++;
-    }else{
-        product.quantity = 1;
-        sofa.push(sofa);//pour relancer
-    }
-    saveSofa(this.sofa);//enregistre dans le panier
-}
-}*/
+
 
 
 //Gestion de l'affichage et les interactions de la page contact
@@ -244,25 +266,12 @@ document.querySelector("#order").addEventListener("click",function(){
     if(valid){
         alert("votre commande est confirmée");
     }
-});
-
-
-
-
-
-/*
-document.querySelector('.form input[type="submit"]').addEventListener("click",function(){
-    var valid = true;
-    for(let input of document.querySelectorAll(".form input,.form textarea")){
-        valid &= input.reportValidity(); // va afficher un message pour dire que le champ n'est pas correct
-        if(!valid){
-            break;
-        }
-    }
-    if(valid){
-        alert("votre commande est confirmée");
-    }
 });*/
+
+
+
+
+
 
 
 
