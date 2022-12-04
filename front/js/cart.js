@@ -63,14 +63,25 @@ function listCart(){
                  window.location.reload();
              }
          }
-// calcul de la quantité
+         getNumberProduct();
+/*// calcul de la quantité
 document.getElementById("totalQuantity").innerHTML = getNumberProduct();
 
-         })
+//Calcul du tarif total
+
+document.querySelector("#totalPrice").innerHTML = getTotalPrice() ;*/
+
+}
+
+
+         )}
              }
-         }
+         
 listCart()
 
+
+
+// fonction supprimer un article
 function removeFromSofa (cart,index){
     // let cart = getSofa();
      itemToDelete = document.querySelector(
@@ -86,11 +97,37 @@ function removeFromSofa (cart,index){
 
 
 
+// Fonction calcul du nombre d'articles dans le panier 
+async function getNumberProduct() {
+   //let cart = this.getSofa(); 
+   const quantity = document.querySelectorAll(".itemQuantity");
+    let number = 0;
+          for(i = 0; i <cart.length; i++){
+            let TotalQuantity = cart[i].quantity;
+        console.log(TotalQuantity );
+        number += parseInt(cart[i].quantity)  ;
+    }
+    document.querySelector("#totalQuantity").innerText =  number;
 
+    let totalPrice = 0;
+    
+       
+    for (let i = 0; i < cart.length; i++) {
+        
+        let idProduct = cart[i].idProduct;           
+        response = await getDetailsSofa((idProduct));console.log(response)
+        
+        
+      totalPrice += cart[i].quantity * response.price;
+    } 
+    document.querySelector("#totalPrice").innerHTML = totalPrice;
+} 
+    
+  
 
-  // Fonction calcul du nombre d'articles dans le panier 
+/*
   function getNumberProduct() {
-    let cart = this.getSofa(); 
+   //let cart = this.getSofa(); 
     let number = 0;
           for(i = 0; i <cart.length; i++){
             let TotalQuantity = cart[i].quantity;
@@ -100,8 +137,26 @@ function removeFromSofa (cart,index){
     return number;      
  }
 
+ //Fonction calcul du tarif
+async function getTotalPrice(){
+    const quantity = document.querySelectorAll(".itemQuantity");
+    let totalPrice = 0;
+   
+    
+       
+    for (let i = 0; i < cart.length; i++) {
+        let number = quantity[i]; console.log(number);   
+        
+                let idProduct = cart[i].idProduct;
+        response = await getDetailsSofa((idProduct));console.log(response)
+        
+      totalPrice += quantity[i].value * response.price;
+    } 
+    return totalPrice
+} 
 
 
+*/ 
 
 
 
