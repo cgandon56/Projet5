@@ -60,17 +60,11 @@ function listCart(){
              deleteItemList[j].onclick=function() {
                  removeFromSofa(cart,j)
                  saveSofa(cart)
-                 window.location.reload();
+                
              }
          }
          getNumberProduct();
-/*// calcul de la quantité
-document.getElementById("totalQuantity").innerHTML = getNumberProduct();
-
-//Calcul du tarif total
-
-document.querySelector("#totalPrice").innerHTML = getTotalPrice() ;*/
-
+         changeQuantity();
 }
 
 
@@ -89,6 +83,7 @@ function removeFromSofa (cart,index){
      );
      cart.splice(index, 1);
          itemToDelete.remove();
+         window.location.reload();
  }
 
  function saveSofa(cart){ //sauver le panier 
@@ -97,66 +92,48 @@ function removeFromSofa (cart,index){
 
 
 
-// Fonction calcul du nombre d'articles dans le panier 
+// Fonction calcul du nombre d'articles dans le panier et du prix total
 async function getNumberProduct() {
    //let cart = this.getSofa(); 
    const quantity = document.querySelectorAll(".itemQuantity");
     let number = 0;
-          for(i = 0; i <cart.length; i++){
+          for(let i = 0; i <cart.length; i++){
             let TotalQuantity = cart[i].quantity;
         console.log(TotalQuantity );
         number += parseInt(cart[i].quantity)  ;
     }
     document.querySelector("#totalQuantity").innerText =  number;
 
-    let totalPrice = 0;
-    
-       
-    for (let i = 0; i < cart.length; i++) {
-        
-        let idProduct = cart[i].idProduct;           
-        response = await getDetailsSofa((idProduct));console.log(response)
-        
-        
+    let totalPrice = 0; 
+        for (let i = 0; i < cart.length; i++) {
+            let idProduct = cart[i].idProduct;           
+            response = await getDetailsSofa((idProduct));console.log(response)
       totalPrice += cart[i].quantity * response.price;
     } 
     document.querySelector("#totalPrice").innerHTML = totalPrice;
 } 
     
   
-
-/*
-  function getNumberProduct() {
-   //let cart = this.getSofa(); 
-    let number = 0;
-          for(i = 0; i <cart.length; i++){
-            let TotalQuantity = cart[i].quantity;
-        console.log(TotalQuantity );
-        number += parseInt(cart[i].quantity)  ;
-    }
-    return number;      
- }
-
- //Fonction calcul du tarif
-async function getTotalPrice(){
-    const quantity = document.querySelectorAll(".itemQuantity");
-    let totalPrice = 0;
-   
-    
-       
-    for (let i = 0; i < cart.length; i++) {
-        let number = quantity[i]; console.log(number);   
-        
-                let idProduct = cart[i].idProduct;
-        response = await getDetailsSofa((idProduct));console.log(response)
-        
-      totalPrice += quantity[i].value * response.price;
-    } 
-    return totalPrice
-} 
+// Modifier la quantité
+function changeQuantity(){
+    const changeList = document.querySelectorAll(".itemQuantity");
+    for(let i=0;i<changeList.length;i++) {
+        changeList[i].addEventListener("change", (e) => {
+            e.preventDefault();
+let modifQuantity = changeList[i].value;
+if (modifQuantity > 0 && modifQuantity<= 100) {
+cart[i].quantity = modifQuantity;
+saveSofa(cart)
+window.location.reload();
+}
+window.location.reload();
+getNumberProduct()
+})
+}
+}
+ 
 
 
-*/ 
 
 
 
@@ -274,6 +251,25 @@ if(testEmail){
 
 /*
 
+// Modifier la quantité
+function changeQuantity(){
+    const changeList = document.querySelectorAll(".itemQuantity");
+    for(let i=0;i<changeList.length;i++) {
+        changeList[i].addEventListener("change", (e) => {
+            e.preventDefault();
+let modifQuantity = changeList[i].value;
+if (modifQuantity > 0 && modifQuantity<= 100) {
+cart[i].quantity = modifQuantity;
+saveSofa(cart)
+window.location.reload();
+}else if (modifQuantity <= 0){
+    removeFromSofa
+    window.location.reload();
+}
+getNumberProduct()
+})
+}
+}
 
 
 //Gestion du panier
@@ -293,18 +289,6 @@ function changeQuantity(product, quantity){
         }
     }
     }
-
-
-
-    // Calcul du prix
-    function getTotalPrice(){
-        let cart = getSofa(); 
-        let total = 0;
-        for(let product of cart)
-        number += product.quantity * product.price;
-        return number;
-    }
-
 
 
 
