@@ -1,4 +1,4 @@
-let cart = getSofa(); console.log(cart);
+let cart = getSofa(); 
 
 
 function getSofa(){// fonction récupérer le panier
@@ -138,7 +138,8 @@ getNumberProduct()
 
 
  
-//Déclaration des éléments du questionnaire
+//Déclaration des éléments du questionnaire et vérification que le questionnaire est bien rempli
+
 const firstName = document.querySelector("#firstName");
 firstName.addEventListener("change", function(){
 validfirstName(this)
@@ -166,8 +167,10 @@ validcity(this)
 const email= document.querySelector("#email");
 email.addEventListener("change", function(){
 validEmail(this)})
+
+
         
-  
+
 //Fonctions RegExp pour la validation   
 
 
@@ -176,8 +179,8 @@ function validfirstName(inputfirstName){
     let firstNameRegExp = new RegExp(/^[a-z][a-z '-.,]{1,31}$|^$/i);
     let testfirstName = firstNameRegExp.test(inputfirstName.value) ;
     if(testfirstName){
-        firstNameErrorMsg.innerHTML = "Valide";
-        return true
+        firstNameErrorMsg.innerHTML = "Prénom Valide";
+        return true;
     }else{
         firstNameErrorMsg.innerHTML = "Non valide";
         return false;
@@ -244,68 +247,71 @@ if(testEmail){
 }
 
 
-//------------------------------------------------------------
 
+//ENvoi du formulaire
+let products = [];
+for (i=0; i<cart.length;i++){
+    products.push(cart[i].idProduct)} console.log(products)
 
-
-
-/*
-
-// Modifier la quantité
-function changeQuantity(){
-    const changeList = document.querySelectorAll(".itemQuantity");
-    for(let i=0;i<changeList.length;i++) {
-        changeList[i].addEventListener("change", (e) => {
-            e.preventDefault();
-let modifQuantity = changeList[i].value;
-if (modifQuantity > 0 && modifQuantity<= 100) {
-cart[i].quantity = modifQuantity;
-saveSofa(cart)
-window.location.reload();
-}else if (modifQuantity <= 0){
-    removeFromSofa
-    window.location.reload();
+document.querySelector("#order").addEventListener("click",(e) => { 
+    e.preventDefault();
+    let objectForm = { 
+    firstName: document.querySelector("#firstName").value,
+    lastName :document.querySelector("#lastName").value,
+    address: document.querySelector("#address").value,
+    city:document.querySelector("#city").value,
+    email:document.querySelector("#email").value,
 }
-getNumberProduct()
+console.log(objectForm);
+
+
+const order = {objectForm, products};console.log(order);
+
+var valid = true;
+if(!valid){
+    return false;
+}
+
+if(valid){
+SendRequest();
+}
+
+
+});
+
+
+
+
+
+
+
+//Fonction créer requete
+function SendRequest(){
+    fetch(`http://localhost:3000/api/products/order`, {
+    method: 'POST',
+    body: JSON.stringify(order),
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+ }
 })
+  .then((response) => response.json())
+  .then((data) => {
+      console.log(data);
+      
+          window.location.href = `confirmation.html?idProduct=${data.orderId}`;
+
+  })
+  .catch(error => console.warn(error));
+
 }
-}
-
-
-//Gestion du panier
-
-
-
-//Modifier la quantité
-function changeQuantity(product, quantity){
-    let cart = getSofa();  
-    let foundProduct = cart.find(p=>p.idProduct != product)
-    if(foundProduct != undefined){ //gestion de la quantité
-        foundProduct.quantity += quantity;
-        if(foundProduct.quantity <= 0){
-            removeFromSofa(foundProduct);
-        }else{
-            saveSofa(cart);
-        }
-    }
-    }
 
 
 
 
-//Gestion de l'affichage et les interactions de la page contact
-document.querySelector("#order").addEventListener("click",function(){
-    var valid = true;
-    for(let input of document.querySelectorAll(".form input,.form textarea")){
-        valid &= input.reportValidity(); // va afficher un message pour dire que le champ n'est pas correct
-        if(!valid){
-            break;
-        }
-    }
-    if(valid){
-        alert("votre commande est confirmée");
-    }
-});*/
+
+
+
+
 
 
 
