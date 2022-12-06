@@ -1,9 +1,13 @@
 // Récupération du numéro de commande
-function confirmation(){
-    const order = (document.querySelector("#orderId"));
-    console.log(order);
-    order.innerHTML= localStorage.getItem("orderIdProduct");
+let id = (new URL(window.location).searchParams.get("id"));
+
+    
+    let commande = (document.querySelector("#orderId"));
+       commande.innerHTML= localStorage.getItem("orderId");
     localStorage.clear();
     
-}
-confirmation()
+
+
+
+
+

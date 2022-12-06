@@ -23,6 +23,7 @@ function getDetailsSofa(idProduct){
 }
 
 function listCart(){
+    let cart = this.getSofa(); 
     for (i = 0; i <cart.length; i++){
         let quantity = cart[i].quantity
         let color = cart[i].color
@@ -246,35 +247,39 @@ if(testEmail){
 }
 }
 
-
+function objectForm (){
+  
+    let contact= { 
+        firstName: document.querySelector("#firstName").value,
+        lastName :document.querySelector("#lastName").value,
+        address: document.querySelector("#address").value,
+        city:document.querySelector("#city").value,
+        email:document.querySelector("#email").value, 
+    };console.log(contact)
+    let products = [];
+        for (i=0; i<cart.length;i++){
+            products.push(cart[i].idProduct)} ;console.log(products)
+     
+  
+  }
 
 //ENvoi du formulaire
-let products = [];
-for (i=0; i<cart.length;i++){
-    products.push(cart[i].idProduct)} console.log(products)
+
 
 document.querySelector("#order").addEventListener("click",(e) => { 
     e.preventDefault();
-    let objectForm = { 
-    firstName: document.querySelector("#firstName").value,
-    lastName :document.querySelector("#lastName").value,
-    address: document.querySelector("#address").value,
-    city:document.querySelector("#city").value,
-    email:document.querySelector("#email").value,
-}
-console.log(objectForm);
 
-
-const order = {objectForm, products};console.log(order);
-
-var valid = true;
-if(!valid){
-    return false;
+if(
+    validfirstName(firstName)&&
+validlastName(lastName)&&
+validaddress(address)&&
+validcity(city)&&
+validEmail(email))
+SendRequest(objectForm ());
+else{
+    console.error("Tous les champs ne sont pas correctement remplis") 
 }
 
-if(valid){
-SendRequest();
-}
 
 
 });
@@ -297,7 +302,7 @@ function SendRequest(){
   .then((response) => response.json())
   .then((data) => {
       console.log(data);
-      
+      localStorage.setItem("orderId", data.orderId);
           window.location.href = `confirmation.html?idProduct=${data.orderId}`;
 
   })
@@ -306,9 +311,67 @@ function SendRequest(){
 }
 
 
+/*
 
 
 
+
+//ENvoi du formulaire
+
+document.querySelector("#order").addEventListener("click",(e) => { 
+    e.preventDefault();
+     let inputfirstName = firstName.value;
+    let inputlastName = lastName.value;
+    let inputaddress=address.value;
+    let inputcity=city.value;
+    let inputEmail=email.value;
+      
+        if(
+            validfirstName(inputfirstName)&&
+            validlastName(inputlastName)&&
+            validaddress(inputaddress)&&
+            validcity(inputcity)&&
+            validEmail(inputEmail)
+
+        ){
+            
+            SendRequest(objectForm ());
+        }else{
+            console.error("Tous les champs ne sont pas correctement remplis");  
+        }
+
+
+
+}
+
+
+);
+
+
+    
+
+
+//Fonction créer requete
+function SendRequest(){
+    fetch(`http://localhost:3000/api/products/order`, {
+    method: 'POST',
+    body: JSON.stringify(order),
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+ }
+})
+  .then((response) => response.json())
+  .then((data) => {
+      console.log(data);
+      localStorage.setItem("orderId", data.orderId);
+          window.location.href = `confirmation.html?idProduct=${data.idProduct}`;
+
+  })
+  .catch(error => console.warn(error));
+
+}
+
+*/
 
 
 
