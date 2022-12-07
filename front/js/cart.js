@@ -247,7 +247,10 @@ if(testEmail){
 }
 }
 
-function objectForm (){
+
+// Création des données à envoyer
+
+/*function objectForm (){
   
     let contact= { 
         firstName: document.querySelector("#firstName").value,
@@ -261,7 +264,7 @@ function objectForm (){
             products.push(cart[i].idProduct)} ;console.log(products)
      
   
-  }
+  }*/
 
 //ENvoi du formulaire
 
@@ -274,14 +277,11 @@ if(
 validlastName(lastName)&&
 validaddress(address)&&
 validcity(city)&&
-validEmail(email))
-SendRequest(objectForm ());
+validEmail(email)) {
+SendRequest();} 
 else{
     console.error("Tous les champs ne sont pas correctement remplis") 
 }
-
-
-
 });
 
 
@@ -292,18 +292,33 @@ else{
 
 //Fonction créer requete
 function SendRequest(){
+    let contact= { 
+        firstName: document.querySelector("#firstName").value,
+        lastName :document.querySelector("#lastName").value,
+        address: document.querySelector("#address").value,
+        city:document.querySelector("#city").value,
+        email:document.querySelector("#email").value, 
+    };console.log(contact)
+    let products = [];
+        for (i=0; i<cart.length;i++){
+            products.push(cart[i].idProduct)} ;console.log(products)
+    const objectForm = {
+                contact,
+                products,
+            }
     fetch(`http://localhost:3000/api/products/order`, {
     method: 'POST',
-    body: JSON.stringify(order),
-    headers: {
+    body: JSON.stringify(objectForm),// corps de la requete
+    headers: {// entete de la requete pour préciser le type de données
       'Content-Type': 'application/json;charset=utf-8'
  }
 })
   .then((response) => response.json())
-  .then((data) => {
-      console.log(data);
-      localStorage.setItem("orderId", data.orderId);
-          window.location.href = `confirmation.html?idProduct=${data.orderId}`;
+  .then((data) => { 
+  
+      
+    localStorage.setItem("objectForm", JSON.stringify(objectForm));
+    document.location.href = `confirmation.html?idProducts=${data.orderId}`;
 
   })
   .catch(error => console.warn(error));
@@ -311,68 +326,13 @@ function SendRequest(){
 }
 
 
-/*
 
 
 
 
-//ENvoi du formulaire
-
-document.querySelector("#order").addEventListener("click",(e) => { 
-    e.preventDefault();
-     let inputfirstName = firstName.value;
-    let inputlastName = lastName.value;
-    let inputaddress=address.value;
-    let inputcity=city.value;
-    let inputEmail=email.value;
-      
-        if(
-            validfirstName(inputfirstName)&&
-            validlastName(inputlastName)&&
-            validaddress(inputaddress)&&
-            validcity(inputcity)&&
-            validEmail(inputEmail)
-
-        ){
-            
-            SendRequest(objectForm ());
-        }else{
-            console.error("Tous les champs ne sont pas correctement remplis");  
-        }
-
-
-
-}
-
-
-);
 
 
     
-
-
-//Fonction créer requete
-function SendRequest(){
-    fetch(`http://localhost:3000/api/products/order`, {
-    method: 'POST',
-    body: JSON.stringify(order),
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8'
- }
-})
-  .then((response) => response.json())
-  .then((data) => {
-      console.log(data);
-      localStorage.setItem("orderId", data.orderId);
-          window.location.href = `confirmation.html?idProduct=${data.idProduct}`;
-
-  })
-  .catch(error => console.warn(error));
-
-}
-
-*/
-
 
 
 

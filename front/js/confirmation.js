@@ -1,12 +1,10 @@
 // Récupération du numéro de commande
-let id = (new URL(window.location).searchParams.get("id"));
+const params = new URL(document.location).searchParams;
+    let orderId = params.get("idProducts");
 
-    
-    let commande = (document.querySelector("#orderId"));
-       commande.innerHTML= localStorage.getItem("orderId");
-    localStorage.clear();
-    
-
+let commande = document.getElementById("orderId");
+commande.innerHTML = orderId;
+localStorage.clear();
 
 
 
