@@ -1,7 +1,7 @@
 let cart = getSofa(); 
 
-
-function getSofa(){// fonction récupérer le panier
+// fonction récupérer le panier
+function getSofa(){
     let cart = localStorage.getItem("cart");   
     if(cart == null){
     let h1 = document.querySelector("h1");
@@ -11,6 +11,8 @@ function getSofa(){// fonction récupérer le panier
     }
 }
 
+
+//Fonction récupération de l'adresse pour avoir les données des articles
 function getDetailsSofa(idProduct){
     return  fetch(`http://localhost:3000/api/products/${idProduct}`)
         .then((response) => response.json())
@@ -22,6 +24,7 @@ function getDetailsSofa(idProduct){
 
 }
 
+// Fonction affichage des détails des articles du panier 
 function listCart(){
     let cart = this.getSofa(); 
     for (i = 0; i <cart.length; i++){
@@ -54,24 +57,21 @@ function listCart(){
   </div>
 </div>
 </article>`
+
          // Suppression d'un produit
          const deleteItemList = document.querySelectorAll(".cart__item__content__settings__delete");
          for(let j=0;j<deleteItemList.length;j++) {
              i = j
              deleteItemList[j].onclick=function() {
-                 removeFromSofa(cart,j)
-                 saveSofa(cart)
-                
+                 removeFromSofa(cart,j);
+                 saveSofa(cart);
              }
          }
-         getNumberProduct();
-         changeQuantity();
-}
-
-
+         getNumberProduct();// calcul nombre d'articles
+         changeQuantity();// Modification quantité
+        }
          )}
-             }
-         
+}        
 listCart()
 
 
@@ -115,7 +115,7 @@ async function getNumberProduct() {
 } 
     
   
-// Modifier la quantité
+// Fonction modifier la quantité
 function changeQuantity(){
     const changeList = document.querySelectorAll(".itemQuantity");
     for(let i=0;i<changeList.length;i++) {
@@ -133,10 +133,6 @@ getNumberProduct()
 }
 }
  
-
-
-
-
 
  
 //Déclaration des éléments du questionnaire et vérification que le questionnaire est bien rempli
@@ -175,7 +171,7 @@ validEmail(this)})
 //Fonctions RegExp pour la validation   
 
 
-//Prénom
+//Vérification Prénom
 function validfirstName(inputfirstName){
     let firstNameRegExp = new RegExp(/^[a-z][a-z '-.,]{1,31}$|^$/i);
     let testfirstName = firstNameRegExp.test(inputfirstName.value) ;
@@ -189,7 +185,7 @@ function validfirstName(inputfirstName){
 }
 
 
-//Nom
+//Vérification du Nom
 function validlastName(inputlastName){
     let lastNameRegExp = new RegExp(/^[a-z][a-z '-.,]{1,31}$|^$/i);
     let testlastName = lastNameRegExp.test(inputlastName.value) ;
@@ -203,7 +199,7 @@ function validlastName(inputlastName){
 }
 
 
-//Adresse
+//Vérification Adresse
 function validaddress(inputAddress){
     let addressRegExp = new RegExp(/^[a-zA-Z0-9\s,.'-]{3,}$/);
     let testaddress = addressRegExp.test(inputAddress.value) ;
@@ -218,7 +214,7 @@ function validaddress(inputAddress){
 
 
 
-//Ville
+//Vérification Ville
 function validcity(inputcity){
     let cityRegExp = new RegExp(/^[a-zA-Z0-9\s,.'-]{3,}$/);
     let testcity = cityRegExp.test(inputcity.value) ;
@@ -233,7 +229,7 @@ function validcity(inputcity){
  
 
 
-//Email
+//Vérification Email
 function validEmail(inputEmail){
 let emailRegExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);  // le + veut dire peut être écrit une fois ou plusieurs
 let testEmail = emailRegExp.test(inputEmail.value) ;
@@ -247,38 +243,17 @@ if(testEmail){
 }
 }
 
-
-// Création des données à envoyer
-
-/*function objectForm (){
-  
-    let contact= { 
-        firstName: document.querySelector("#firstName").value,
-        lastName :document.querySelector("#lastName").value,
-        address: document.querySelector("#address").value,
-        city:document.querySelector("#city").value,
-        email:document.querySelector("#email").value, 
-    };console.log(contact)
-    let products = [];
-        for (i=0; i<cart.length;i++){
-            products.push(cart[i].idProduct)} ;console.log(products)
-     
-  
-  }*/
-
-//ENvoi du formulaire
-
-
+//Envoi du formulaire
 document.querySelector("#order").addEventListener("click",(e) => { 
     e.preventDefault();
 
 if(
     validfirstName(firstName)&&
-validlastName(lastName)&&
-validaddress(address)&&
-validcity(city)&&
-validEmail(email)) {
-SendRequest();} 
+    validlastName(lastName)&&
+    validaddress(address)&&
+    validcity(city)&&
+    validEmail(email)) {
+SendRequest();} //envoyer la requete si le questionnaire est validé
 else{
     console.error("Tous les champs ne sont pas correctement remplis") 
 }
@@ -286,11 +261,7 @@ else{
 
 
 
-
-
-
-
-//Fonction créer requete
+//Fonction envoyer la requete
 function SendRequest(){
     let contact= { 
         firstName: document.querySelector("#firstName").value,
@@ -302,7 +273,7 @@ function SendRequest(){
     let products = [];
         for (i=0; i<cart.length;i++){
             products.push(cart[i].idProduct)} ;console.log(products)
-    const objectForm = {
+    const objectForm = {// création de l'objet à envoyer
                 contact,
                 products,
             }

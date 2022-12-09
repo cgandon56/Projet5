@@ -48,7 +48,7 @@ async function article() {
     let objectCart={}
     
     
-    //Ajouter des articles dans le panier
+    //Fonction ajouter des articles dans le panier
     function addSofa(product)  {
         let color = document.querySelector("#colors").value; 
         let quantity = document.querySelector("#quantity").value; 
@@ -69,29 +69,15 @@ async function article() {
         }
     
     
-       
-    
-        
-    /*let foundProduct = cart.find(p => p.productId == product  &&  p.color == color);
-    if(foundProduct){
-        for (i = 0; i < cart.length; i++) {
-            if (cart[i].productId == product && cart[i].color == color) {
-                cart[i].quantity = parseInt(cart[i].quantity) + parseInt(quantity);
-            }
-        } 
-    } */
-    
-    
-    
-    
-    
-    
     //Sauver et récupérer le panier
-    function saveSofa(cart){ //sauver le panier 
+
+    //Fonction sauver la panier
+    function saveSofa(cart){ 
         localStorage.setItem("cart", JSON.stringify(cart));//stringify=prend en objet et le transforme en chaine de caractères pour l'enregistrer
     }
-    
-    function getSofa(){// récupérer
+
+    // FOnction récupérer le panier
+    function getSofa(){
         let cart = localStorage.getItem("cart");
         if(cart == null){
             return [];
