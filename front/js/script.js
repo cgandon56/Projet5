@@ -1,7 +1,7 @@
 async function products() { 
-fetch("http://localhost:3000/api/products")//adresse URL à aller chercher
-.then(response => response.json())// réponse du résultat en json
-.then((data)=> {
+  fetch("http://localhost:3000/api/products")//adresse URL à aller chercher
+    .then(response => response.json())// réponse du résultat en json
+    .then((data)=> {
     console.log(data) ;
 
 
@@ -27,6 +27,8 @@ console.log(section);
         `;
         section.innerHTML += article; //récupération du contenu html et intégration
       }
-    });
+    })
+    .catch(error => console.warn("les produits ne s'affichent par correctement"));
 };
 products();
+
