@@ -173,10 +173,10 @@ const email= document.querySelector("#email");
 
 //Vérification Prénom
 function validfirstName(inputfirstName){
-    let firstNameRegExp = new RegExp(/^[a-z][a-z '-.,]{1,31}$|^$/i);
+    let firstNameRegExp = new RegExp("^[A-Za-zéèêëàâîïôöûü-]+$");
     let testfirstName = firstNameRegExp.test(inputfirstName.value) ;
     if(testfirstName){
-        firstNameErrorMsg.innerHTML = "Prénom Valide";
+       // firstNameErrorMsg.innerHTML = "Prénom Valide";
         return true;
     }else{
         firstNameErrorMsg.innerHTML = "Non valide";
@@ -187,10 +187,9 @@ function validfirstName(inputfirstName){
 
 //Vérification du Nom
 function validlastName(inputlastName){
-    let lastNameRegExp = new RegExp(/^[a-z][a-z '-.,]{1,31}$|^$/i);
+    let lastNameRegExp = new RegExp("^[A-Za-zéèêëàâîïôöûü-]+$");
     let testlastName = lastNameRegExp.test(inputlastName.value) ;
     if(testlastName){
-        lastNameErrorMsg.innerHTML = "Valide";
         return true
     }else{
         lastNameErrorMsg.innerHTML = "Non valide";
@@ -201,10 +200,9 @@ function validlastName(inputlastName){
 
 //Vérification Adresse
 function validaddress(inputAddress){
-    let addressRegExp = new RegExp(/^[a-zA-Z0-9\s,.'-]{3,}$/);
+    let addressRegExp = new RegExp(/^[a-zA-Z0-9\u00C0-\u00FF\s,. '-]{3,}$/);
     let testaddress = addressRegExp.test(inputAddress.value) ;
     if(testaddress){
-        addressErrorMsg.innerHTML = "Valide";
         return true
     }else{
         addressErrorMsg.innerHTML = "Non valide";
@@ -216,10 +214,9 @@ function validaddress(inputAddress){
 
 //Vérification Ville
 function validcity(inputcity){
-    let cityRegExp = new RegExp(/^[a-zA-Z0-9\s,.'-]{3,}$/);
+    let cityRegExp = new RegExp("^[A-Za-zéèêëàâîïôöûü-]+$");
     let testcity = cityRegExp.test(inputcity.value) ;
     if(testcity){
-        cityErrorMsg.innerHTML = "Valide";
         return true
     }else{
         cityErrorMsg.innerHTML = "Non valide";
@@ -234,10 +231,9 @@ function validEmail(inputEmail){
 let emailRegExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);  // le + veut dire peut être écrit une fois ou plusieurs
 let testEmail = emailRegExp.test(inputEmail.value) ;
 if(testEmail){
-    emailErrorMsg.innerHTML = "Adresse valide";
-    return true
+     return true
 }else{
-    emailErrorMsg.innerHTML = "Message d'erreur";
+    emailErrorMsg.innerHTML = "Email non valide";
     return false;
     
 }
