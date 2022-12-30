@@ -7,7 +7,7 @@ function getSofa(){
             let h1 = document.querySelector("h1");
             h1.innerText = "Votre panier est vide";
         } else {
-        return JSON.parse(cart);
+            return JSON.parse(cart);
         }
 }
 
@@ -17,8 +17,8 @@ function getDetailsSofa(idProduct){
     return  fetch(`http://localhost:3000/api/products/${idProduct}`)
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
-                    return data;
+        console.log(data);
+            return data;
         })
         .catch(error => console.warn(error));
 
@@ -34,43 +34,42 @@ function listCart(){
 
         getDetailsSofa(cart[i].idProduct).then(response => {
 
-
     document.querySelector("#cart__items").innerHTML +=
-    `<article class="cart__item" data-id= "${idProduct}" data-color="${color}">
-<div class="cart__item__img">
-  <img src=${response.imageUrl}  alt= "Photographie d'un canapé">
-</div>
-<div class="cart__item__content">
-  <div class="cart__item__content__description">
-    <h2>${response.name}</h2>
-    <p>${color}</p>
-    <p>${response.price}</p>
-  </div>
-  <div class="cart__item__content__settings">
-    <div class="cart__item__content__settings__quantity">
-      <p>Qté : </p>
-      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${quantity}">
-    </div>
-    <div class="cart__item__content__settings__delete">
-      <p class="deleteItem">Supprimer</p>
-    </div>
-  </div>
-</div>
-</article>`
+                                    `<article class="cart__item" data-id= "${idProduct}" data-color="${color}">
+                                        <div class="cart__item__img">
+                                            <img src=${response.imageUrl}  alt= "Photographie d'un canapé">
+                                        </div>
+                                        <div class="cart__item__content">
+                                            <div class="cart__item__content__description">
+                                                <h2>${response.name}</h2>
+                                                <p>${color}</p>
+                                                <p>${response.price}</p>
+                                            </div>
+                                            <div class="cart__item__content__settings">
+                                                <div class="cart__item__content__settings__quantity">
+                                                    <p>Qté : </p>
+                                                    <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${quantity}">
+                                                </div>
+                                                <div class="cart__item__content__settings__delete">
+                                                    <p class="deleteItem">Supprimer</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>`
 
 // Suppression d'un produit
-const deleteItemList = document.querySelectorAll(".cart__item__content__settings__delete");
-    for(let j=0;j<deleteItemList.length;j++) {
-    i = j
-        deleteItemList[j].onclick=function() {
+    const deleteItemList = document.querySelectorAll(".cart__item__content__settings__delete");
+        for(let j=0;j<deleteItemList.length;j++) {
+        i = j
+            deleteItemList[j].onclick=function() {
             removeFromSofa(cart,j);
             saveSofa(cart);
+            }
         }
-    }
-         getNumberProduct();// calcul nombre d'articles
-         changeQuantity();// Modification quantité
+        getNumberProduct();// calcul nombre d'articles
+        changeQuantity();// Modification quantité
         }
-         )}
+    )}
 }        
 listCart()
 
@@ -135,7 +134,6 @@ function changeQuantity(){
 
  
 //Déclaration des éléments du questionnaire et vérification que le questionnaire est bien rempli
-
 const firstName = document.querySelector("#firstName");
     firstName.addEventListener("change", function(){
     validfirstName(this)
@@ -165,22 +163,20 @@ const email= document.querySelector("#email");
     validEmail(this)
     });
 
-
         
 
 //Fonctions RegExp pour la validation   
-
 
 //Vérification Prénom
 function validfirstName(inputfirstName){
     let firstNameRegExp = new RegExp("^[A-Za-zéèêëàâîïôöûü-]+$");
     let testfirstName = firstNameRegExp.test(inputfirstName.value) ;
-    if(testfirstName){
+        if(testfirstName){
        // firstNameErrorMsg.innerHTML = "Prénom Valide";
-        return true;
-    }else{
+            return true;
+        }else{
         firstNameErrorMsg.innerHTML = "Non valide";
-        return false;
+            return false;
     }
 }
 
@@ -189,11 +185,11 @@ function validfirstName(inputfirstName){
 function validlastName(inputlastName){
     let lastNameRegExp = new RegExp("^[A-Za-zéèêëàâîïôöûü-]+$");
     let testlastName = lastNameRegExp.test(inputlastName.value) ;
-    if(testlastName){
-        return true
-    }else{
+        if(testlastName){
+            return true
+        }else{
         lastNameErrorMsg.innerHTML = "Non valide";
-        return false;
+            return false;
     }
 }
 
@@ -202,11 +198,11 @@ function validlastName(inputlastName){
 function validaddress(inputAddress){
     let addressRegExp = new RegExp(/^[a-zA-Z0-9\u00C0-\u00FF\s,. '-]{3,}$/);
     let testaddress = addressRegExp.test(inputAddress.value) ;
-    if(testaddress){
-        return true
-    }else{
+        if(testaddress){
+            return true
+        }else{
         addressErrorMsg.innerHTML = "Non valide";
-        return false;
+            return false;
     }
 }
 
@@ -216,11 +212,11 @@ function validaddress(inputAddress){
 function validcity(inputcity){
     let cityRegExp = new RegExp("^[A-Za-zéèêëàâîïôöûü-]+$");
     let testcity = cityRegExp.test(inputcity.value) ;
-    if(testcity){
-        return true
-    }else{
+        if(testcity){
+            return true
+        }else{
         cityErrorMsg.innerHTML = "Non valide";
-        return false;
+            return false;
     }
 }
  
@@ -228,31 +224,29 @@ function validcity(inputcity){
 
 //Vérification Email
 function validEmail(inputEmail){
-let emailRegExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);  // le + veut dire peut être écrit une fois ou plusieurs
-let testEmail = emailRegExp.test(inputEmail.value) ;
-if(testEmail){
-     return true
-}else{
-    emailErrorMsg.innerHTML = "Email non valide";
-    return false;
-    
-}
+    let emailRegExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);  // le + veut dire peut être écrit une fois ou plusieurs
+    let testEmail = emailRegExp.test(inputEmail.value) ;
+        if(testEmail){
+            return true
+        }else{
+        emailErrorMsg.innerHTML = "Email non valide";
+            return false;
+    }
 }
 
 //Envoi du formulaire
 document.querySelector("#order").addEventListener("click",(e) => { 
     e.preventDefault();
-
-if(
-    validfirstName(firstName)&&
-    validlastName(lastName)&&
-    validaddress(address)&&
-    validcity(city)&&
-    validEmail(email)) {
-SendRequest();} //envoyer la requete si le questionnaire est validé
-else{
+    if(
+        validfirstName(firstName)&&
+        validlastName(lastName)&&
+        validaddress(address)&&
+        validcity(city)&&
+        validEmail(email)) {
+        SendRequest();} //envoyer la requete si le questionnaire est validé
+    else{
     console.error("Tous les champs ne sont pas correctement remplis") 
-}
+    }
 });
 
 
