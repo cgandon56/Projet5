@@ -15,9 +15,13 @@ async function article() {
             const button = (document.querySelector("#addToCart"));
             button.addEventListener("click", function() {
             console.log(addEventListener);
-                if (document.querySelector("#quantity").reportValidity() && // message doit être supérieur à 1 et inférieur ou égal à 100
-                document.querySelector("#colors").reportValidity())
-                addSofa(idProduct);
+                if (document.querySelector("#quantity").reportValidity()) // message doit être supérieur à 1 et inférieur ou égal à 100
+                //document.querySelector("#colors").reportValidity())
+                if (colors.value && quantity.value > 0)
+               addSofa(idProduct);
+               else{
+                alert("La couleur n'est pas sélectionnée");  
+            }
             })
         }) 
         .catch(error => console.warn("Le produit sélectionné ne s'affiche pas correctement"))
@@ -54,20 +58,20 @@ function addSofa(product)  {
     let color = document.querySelector("#colors").value; 
     let quantity = document.querySelector("#quantity").value; 
     let cart = this.getSofa(); 
-        if (color != "") {let foundProduct = cart.find(p => p.idProduct == product  &&  p.color == color);
-            if(foundProduct){
-                for (i = 0; i < cart.length; i++) {
-                    if (cart[i].idProduct == product && cart[i].color == color) {
-                        cart[i].quantity = parseInt(cart[i].quantity) + parseInt(quantity);
-                    }
-                } 
-            }
+                    if (color != "") {let foundProduct = cart.find(p => p.idProduct == product  &&  p.color == color);
+                if(foundProduct){
+                    for (i = 0; i < cart.length; i++) {
+                        if (cart[i].idProduct == product && cart[i].color == color) {
+                         cart[i].quantity = parseInt(cart[i].quantity) + parseInt(quantity);
+                        }
+                    } 
+                }
             else{
                 cart.push({color: color, quantity : quantity, idProduct : product});  
             }
          }   
         saveSofa(cart);
-        }
+    }
     
     
 //Sauver et récupérer le panier

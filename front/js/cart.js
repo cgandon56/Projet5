@@ -242,17 +242,21 @@ document.querySelector("#order").addEventListener("click",(e) => {
         validlastName(lastName)&&
         validaddress(address)&&
         validcity(city)&&
-        validEmail(email)) {
-        SendRequest();} //envoyer la requete si le questionnaire est validé
+        validEmail(email))
+    if (cart!= 0)    
+                     {
+        SendRequest();//envoyer la requete si le questionnaire est validé
+        } 
     else{
     console.error("Tous les champs ne sont pas correctement remplis") 
     }
-});
+
 
 
 
 //Fonction envoyer la requete
 function SendRequest(){
+    
     let contact= { 
         firstName: document.querySelector("#firstName").value,
         lastName :document.querySelector("#lastName").value,
@@ -276,12 +280,14 @@ function SendRequest(){
     })
         .then((response) => response.json())
         .then((data) => { 
+           
             localStorage.setItem("objectForm", JSON.stringify(objectForm));
             document.location.href = `confirmation.html?idProducts=${data.orderId}`;
+            localStorage.clear();
   })
         .catch(error => console.warn(error));
 }
-
+});
 
 
 

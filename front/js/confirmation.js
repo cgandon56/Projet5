@@ -4,7 +4,7 @@ const params = new URL(document.location).searchParams;
 
 let commande = document.getElementById("orderId");// affichage du numéro de commande
     commande.innerHTML = orderId;
-    localStorage.clear();// Supression des données du panier
+    //localStorage.clear();// Supression des données du panier
 
 
 
